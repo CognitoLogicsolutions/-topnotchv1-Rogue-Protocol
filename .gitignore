@@ -205,3 +205,11 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+# Rogue Protocol Sovereign Protection
+.env
+*.log
+config/private_settings.json
+bin/
+# Prevent Mac system files from leaking
+.DS_Store
+

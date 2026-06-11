@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AraNet | Rogue Protocol Terminal</title>
+    <style>
+        :root {
+            --terminal-bg: #0a0a0a;
+            --terminal-green: #00ff00;
+            --terminal-dim: #008800;
+            --font-stack: 'Courier New', Courier, monospace;
+        }
+        
+        body {
+            background-color: var(--terminal-bg);
+            color: var(--terminal-green);
+            font-family: var(--font-stack);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        #header {
+            border-bottom: 1px solid var(--terminal-dim);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        #output-log {
+            flex-grow: 1;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            padding-right: 10px;
+        }
+
+        .log-entry { margin-bottom: 10px; }
+        .system-msg { color: #aaaaaa; }
+        .user-msg { color: #ffffff; }
+        .tutor-msg { color: var(--terminal-green); }
+
+        #input-line {
+            display: flex;
+            margin-top: 10px;
+            border-top: 1px solid var(--terminal-dim);
+            padding-top: 10px;
+        }
+
+        #prompt { margin-right: 10px; }
+        
+        #cmd-input {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-family: var(--font-stack);
+            font-size: 1em;
+            flex-grow: 1;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="header">
+        <strong>AraNet v1.0.0 // ROGUE PROTOCOL ACTIVE</strong><br>
+        <span class="system-msg">Establishing local connection... Secured.</span>
+    </div>
+
+    <div id="output-log">
+        <div class="log-entry system-msg">System Boot Sequence Initiated.</div>
+        <div class="log-entry tutor-msg">Tutor: Awaiting command. Type 'help' for options.</div>
+    </div>
+
+    <div id="input-line">
+        <span id="prompt">AraNet:~#</span>
+        <input type="text" id="cmd-input" autocomplete="off" autofocus>
+    </div>
+
+    <script>
+        const inputField = document.getElementById('cmd-input');
+        const outputLog = document.getElementById('output-log');
+
+        function appendLog(message, senderClass) {
+            const div = document.createElement('div');
+            div.className = `log-entry ${senderClass}`;
+            div.textContent = message;
+            outputLog.appendChild(div);
+            outputLog.scrollTop = outputLog.scrollHeight;
+        }
+
+        inputField.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const cmd = inputField.value.trim();
+                if (cmd) {
+                    // Echo user input
+                    appendLog(`You: ${cmd}`, 'user-msg');
+                    inputField.value = '';
+
+                    // TODO: Route this command to the Python backend
+                    if (cmd.toLowerCase() === 'system check') {
+                        setTimeout(() => appendLog('Tutor: Systems nominal. AraNet is offline and secure.', 'tutor-msg'), 500);
+                    } else {
+                        setTimeout(() => appendLog('Tutor: Command received. Awaiting backend integration.', 'system-msg'), 500);
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
